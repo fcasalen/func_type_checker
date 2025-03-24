@@ -29,7 +29,6 @@ def enforce_types(strict:bool=True):
                     expected_type = parameter.annotation
                     if parameter.kind in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
                         continue
-                    print(name, expected_type)
                     if strict and expected_type is inspect.Parameter.empty:
                         no_type_hints.append(name)
                         continue
