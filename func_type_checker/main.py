@@ -25,7 +25,11 @@ def enforce_types(strict:bool=True):
             no_type_hints = []
             for name, value in bound_args.arguments.items():
                 if name in sig.parameters:
-                    expected_type = sig.parameters[name].annotation
+                    parameter = sig.parameters[name]
+                    expected_type = parameter.annotation
+                    if parameter.kind in (inspect.Parameter.VAR_POSITIONAL, inspect.Parameter.VAR_KEYWORD):
+                        continue
+                    print(name, expected_type)
                     if strict and expected_type is inspect.Parameter.empty:
                         no_type_hints.append(name)
                         continue

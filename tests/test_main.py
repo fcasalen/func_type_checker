@@ -5,9 +5,9 @@ import re
 
 def test_enforce_types():
     @enforce_types()
-    def any_func(a: int, b: str) -> str:
-        return str(a) + b
-    assert any_func(1, '2') == '12'
+    def any_func(a: int, b: str, *args, **kwargs) -> str:
+        return str(a) + b + str(args) + str(kwargs)
+    assert any_func(1, '2') == '12(){}'
     with pytest.raises(TypeError, match=re.escape(
         "Type errors found in function any_func from module tests.test_main:\n\n"
         "Invalid Argument(s) type(s):\n"
@@ -16,8 +16,8 @@ def test_enforce_types():
     )):
         any_func('1', 2)
     @enforce_types()
-    def any_func(a: int, b) -> str:
-        return str(a) + b
+    def any_func(a: int, b, *args, **kwargs) -> str:
+        return str(a) + b + str(args) + str(kwargs)
     with pytest.raises(TypeError, match=re.escape("Missing type hints for argument(s): b")):
         any_func(1, '2')
     @enforce_types(strict=False)
